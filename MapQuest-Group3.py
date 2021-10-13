@@ -40,12 +40,14 @@ frame4.pack(padx=10, pady=10)
 framelast = Frame(root)
 framelast.pack(padx=10, pady=10)
 
+
 def clearFields():
-    startText.delete("1.0","end")
-    desText.delete("1.0","end")
+    startText.delete("1.0", "end")
+    desText.delete("1.0", "end")
     displayedFile.configure(state='normal')
     displayedFile.delete(1.0, END)
     displayedFile.configure(state='disabled')
+
 
 def closeProgram():
     if messagebox.askokcancel("Closing Program", "Click OK to close the program."):
@@ -60,10 +62,10 @@ def sumite():
     print("URL: " + (url))
     json_data = requests.get(url).json()
     json_status = json_data["info"]["statuscode"]
-    output = ''
+    output = "URL: " + (url)
 
     if json_status == 0:
-        output += "API Status: " + \
+        output += "\n\nAPI Status: " + \
             str(json_status) + " = A successful route call.\n"
         output += "=============================================\n"
         output += "Directions from " + (start) + " to " + (des)
@@ -96,6 +98,7 @@ def sumite():
     displayedFile.delete(1.0, END)
     displayedFile.insert(END, output)
     displayedFile.configure(state='disabled')
+
 
 titleLabel = ttk.Label(frame1, text='MapQuest - Group 3', font=('Raleway', 20))
 titleLabel.pack(padx=5, side=LEFT)
