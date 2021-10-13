@@ -40,6 +40,12 @@ frame4.pack(padx=10, pady=10)
 framelast = Frame(root)
 framelast.pack(padx=10, pady=10)
 
+def clearFields():
+    startText.delete("1.0","end")
+    desText.delete("1.0","end")
+    displayedFile.configure(state='normal')
+    displayedFile.delete(1.0, END)
+    displayedFile.configure(state='disabled')
 
 def closeProgram():
     if messagebox.askokcancel("Closing Program", "Click OK to close the program."):
@@ -105,7 +111,11 @@ desText = Text(frame3, height=1, width=100, font=('Raleway', 12))
 desText.pack(padx=5, side=LEFT)
 
 btnRemoveFile = ttk.Button(
-    frame4, text='Submit', command=sumite, width=90, style='all.TButton')
+    frame4, text='Submit', command=sumite, width=50, style='all.TButton')
+# btnRemoveFile.configure(state='disabled')
+btnRemoveFile.pack(padx=5, pady=5, side=LEFT)
+btnRemoveFile = ttk.Button(
+    frame4, text='Reset', command=clearFields, width=50, style='all.TButton')
 # btnRemoveFile.configure(state='disabled')
 btnRemoveFile.pack(padx=5, pady=5, side=LEFT)
 
