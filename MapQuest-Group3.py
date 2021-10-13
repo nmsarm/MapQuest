@@ -34,6 +34,8 @@ frame2 = Frame(root)
 frame2.pack(padx=10, pady=10)
 frame3 = Frame(root)
 frame3.pack(padx=10, pady=10)
+frame4 = Frame(root)
+frame4.pack(padx=10, pady=10)
 
 framelast = Frame(root)
 framelast.pack(padx=10, pady=10)
@@ -68,7 +70,7 @@ def sumite():
         for each in json_data["route"]["legs"][0]["maneuvers"]:
             output += (each["narrative"]) + " (" + \
                 str("{:.2f}".format((each["distance"])*1.61) + " km)")
-            output += "\n=============================================\n"
+            output += "\n\n"
     elif json_status == 402:
         output += "**********************************************\n"
         output += "Status Code: " + \
@@ -89,19 +91,21 @@ def sumite():
     displayedFile.insert(END, output)
     displayedFile.configure(state='disabled')
 
+titleLabel = ttk.Label(frame1, text='MapQuest - Group 3', font=('Raleway', 20))
+titleLabel.pack(padx=5, side=LEFT)
 
-startLabel = ttk.Label(frame1, text='Starting Location: ')
+startLabel = ttk.Label(frame2, text='Starting Location: ')
 startLabel.pack(padx=5, side=LEFT)
-startText = Text(frame1, height=1, width=100, font=('Raleway', 12))
+startText = Text(frame2, height=1, width=100, font=('Raleway', 12))
 startText.pack(padx=5, side=LEFT)
 
-desLabel = ttk.Label(frame2, text='Destination: ')
+desLabel = ttk.Label(frame3, text='Destination: ')
 desLabel.pack(padx=5, side=LEFT)
-desText = Text(frame2, height=1, width=100, font=('Raleway', 12))
+desText = Text(frame3, height=1, width=100, font=('Raleway', 12))
 desText.pack(padx=5, side=LEFT)
 
 btnRemoveFile = ttk.Button(
-    frame3, text='Submit', command=sumite, width=90, style='all.TButton')
+    frame4, text='Submit', command=sumite, width=90, style='all.TButton')
 # btnRemoveFile.configure(state='disabled')
 btnRemoveFile.pack(padx=5, pady=5, side=LEFT)
 
