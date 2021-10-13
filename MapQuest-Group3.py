@@ -68,7 +68,7 @@ def sumite():
         for each in json_data["route"]["legs"][0]["maneuvers"]:
             output += (each["narrative"]) + " (" + \
                 str("{:.2f}".format((each["distance"])*1.61) + " km)")
-            output += "\n=============================================\n"
+            output += "\n\n"
     elif json_status == 402:
         output += "**********************************************\n"
         output += "Status Code: " + \
