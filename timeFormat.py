@@ -16,8 +16,7 @@ def formatTime(seconds):
             hour = format60(hour)
             minute = format60(minute)
             second = format60(second)
-            result = f'{hour}:{minute}:{second}'
-            return result
+            return "{}:{}:{}".format(hour, minute, second)
         else:
             return "Invalid Time"
     except:
@@ -26,9 +25,6 @@ def formatTime(seconds):
 
 def format60(time):
     if time > 10:
-        return f'{time}'
+        return '{}'.format(time)
     else:
-        return f'0{time}'
-
-
-print(formatTime('hehe'))
+        return '0{}'.format(time)
