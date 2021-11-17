@@ -25,23 +25,32 @@ def fetchData(start, des, distance, fuel):
         output += "=============================================\n"
         output += "Directions from " + (start) + " to " + (des)
         output += "\nTrip Duration: " + (json_data["route"]["formattedTime"])
-
+        output += "\nRound Trip Duration: " + str(int((json_data["route"]["time"]))*2)
         if distance == "Miles":
             # data['distance'] = distance
             output += "\nMiles: " + \
                 str("{:.2f}".format((json_data["route"]["distance"])))
+            output += "\nRound Trip in Miles: " + \
+                str("{:.2f}".format((json_data["route"]["distance"])*2))
         else:
             output += "\nKilometers: " + \
                 str("{:.2f}".format((json_data["route"]["distance"])*1.61))
+            output += "\nRound Trip in Kilometers: " + \
+                str("{:.2f}".format(((json_data["route"]["distance"])*1.61)*2))
 
         if fuel == 'Gallons':
             # data['fuel'] = fuel
             output += "\nFuel Used (Gal): " + \
                 str("{:.2f}".format(json_data["route"]["fuelUsed"]))
+            output += "\nRound Trip Fuel Used (Gal): " + \
+                str("{:.2f}".format((json_data["route"]["fuelUsed"])*2))
             output += "\n=============================================\n"
         else:
             output += "\nFuel Used (Ltr): " + \
                 str("{:.2f}".format((json_data["route"]["fuelUsed"])*3.78))
+            output += "\nRound Trip Fuel Used (Ltr): " + \
+                str("{:.2f}".format(((json_data["route"]["fuelUsed"])*3.78)*2))
+
             output += "\n=============================================\n"
 
         for each in json_data["route"]["legs"][0]["maneuvers"]:
