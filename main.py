@@ -38,6 +38,8 @@ framelast.pack(padx=10, pady=10)
 
 
 # function for reset button
+def resetHandler(e):
+    clearFields()
 
 
 def clearFields():
@@ -52,11 +54,19 @@ def clearFields():
 # function for closing the program
 
 
+def escHanlder(e):
+    closeProgram()
+
+
 def closeProgram():
-    # if messagebox.askokcancel("Closing Program", "Click OK to close the program."):
-    root.destroy()
+    if messagebox.askokcancel("Closing Program", "Click OK to close the program."):
+        root.destroy()
 
 # function for submit button
+
+
+def submitHandler(e):
+    sumite()
 
 
 def sumite():
@@ -72,6 +82,15 @@ def sumite():
     displayOutput.insert(END, output)
     displayOutput.configure(state='disabled')
 
+# for tab
+
+
+def focus_next_widget(event):
+    event.widget.tk_focusNext().focus()
+    return("break")
+
+
+root.bind('<Escape>', escHanlder)
 
 # creating and embedding the header title
 titleLabel = ttk.Label(frame1, text='MapQuest - Group 3', font=('Raleway', 20))
@@ -81,11 +100,13 @@ startLabel = ttk.Label(frame2, text='Starting Location: ')
 startLabel.pack(padx=5, side=LEFT)
 startText = Text(frame2, height=1, width=100, font=('Raleway', 12))
 startText.pack(padx=5, side=LEFT)
+startText.bind("<Tab>", focus_next_widget)
 # creating and embedding the destination location label and text box
 desLabel = ttk.Label(frame3, text='Destination: ')
 desLabel.pack(padx=5, side=LEFT)
 desText = Text(frame3, height=1, width=100, font=('Raleway', 12))
 desText.pack(padx=5, side=LEFT)
+desText.bind("<Tab>", focus_next_widget)
 
 
 option1 = ["Kilometers", "Miles"]
@@ -97,6 +118,7 @@ distanceLabel.pack(padx=5,   side=LEFT)
 distance = ttk.Combobox(frame4, value=option1, state='readonly')
 distance.current(0)
 distance.pack(padx=5,   side=LEFT)
+distance.bind("<Tab>", focus_next_widget)
 # distance.bind("<<ComboboxSelected>>", sumite)
 # dropdown menu fuel
 fuelLabel = ttk.Label(frame4, text='Fuel in: ')
@@ -104,6 +126,7 @@ fuelLabel.pack(padx=5,   side=LEFT)
 fuel = ttk.Combobox(frame4, value=option2, state='readonly')
 fuel.current(0)
 fuel.pack(padx=5,   side=LEFT)
+fuel.bind("<Tab>", focus_next_widget)
 # fuel.bind("<<ComboboxSelected>>", sumite)
 
 
@@ -111,9 +134,13 @@ fuel.pack(padx=5,   side=LEFT)
 btnSubmit = ttk.Button(
     frame5, text='Submit', command=sumite, width=50, style='all.TButton')
 btnSubmit.pack(padx=5, pady=5, side=LEFT)
+btnSubmit.bind("<Tab>", focus_next_widget)
+btnSubmit.bind("<Return>", submitHandler)
 btnReset = ttk.Button(
     frame5, text='Reset', command=clearFields, width=50, style='all.TButton')
 btnReset.pack(padx=5, pady=5, side=LEFT)
+btnReset.bind("<Tab>", focus_next_widget)
+btnReset.bind("<Return>", resetHandler)
 # creating and embedding the display text area
 displayOutput = ScrolledText(
     framelast, height=30, width=100, font=('Raleway', 12))
