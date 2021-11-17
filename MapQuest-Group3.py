@@ -37,8 +37,13 @@ frame3 = Frame(root)
 frame3.pack(padx=10, pady=10)
 frame4 = Frame(root)
 frame4.pack(padx=10, pady=10)
+frame5 = Frame(root)
+frame5.pack(padx=10, pady=10)
 framelast = Frame(root)
 framelast.pack(padx=10, pady=10)
+
+
+data = {'distance': 'Kilometers', 'fuel': 'Liters' }
 
 # function for reset button
 
@@ -49,7 +54,9 @@ def clearFields():
     displayOutput.configure(state='normal')
     displayOutput.delete(1.0, END)
     displayOutput.configure(state='disabled')
-
+    distance.current(0)
+    fuel.current(0)
+    
 # function for closing the program
 
 
@@ -78,11 +85,25 @@ def sumite():
         output += "=============================================\n"
         output += "Directions from " + (start) + " to " + (des)
         output += "\nTrip Duration: " + (json_data["route"]["formattedTime"])
-        output += "\nKilometers: " + \
+
+        if data['distance'] != distance.get():
+            data['distance'] = distance.get()
+            output += "\nMiles: " + \
+            str("{:.2f}".format((json_data["route"]["distance"])))
+        else:
+            output += "\nKilometers: " + \
             str("{:.2f}".format((json_data["route"]["distance"])*1.61))
-        output += "\nFuel Used (Ltr): " + \
-            str("{:.2f}".format((json_data["route"]["fuelUsed"])*3.78))
-        output += "\n=============================================\n"
+        
+        if data['fuel'] != fuel.get():
+            data['fuel'] = fuel.get()
+            output += "\nFuel Used (Gal): " + \
+                 str("{:.2f}".format(json_data["route"]["fuelUsed"]))
+            output += "\n=============================================\n"
+        else:
+            output += "\nFuel Used (Ltr): " + \
+                str("{:.2f}".format((json_data["route"]["fuelUsed"])*3.78))
+            output += "\n=============================================\n"
+
         for each in json_data["route"]["legs"][0]["maneuvers"]:
             output += (each["narrative"]) + " (" + \
                 str("{:.2f}".format((each["distance"])*1.61) + " km)")
@@ -99,7 +120,7 @@ def sumite():
         output += "**********************************************\n"
     else:  # to handle other errors
         output += "************************************************************************\n"
-        output += "For Staus Code: " + str(json_status) + "; Refer to:\n"
+        output += "For Status Code: " + str(json_status) + "; Refer to:\n"
         output += "https://developer.mapquest.com/documentation/directions-api/status-codes\n"
         output += "************************************************************************\n"
     # displaying the output text to the text area
@@ -122,12 +143,33 @@ desLabel = ttk.Label(frame3, text='Destination: ')
 desLabel.pack(padx=5, side=LEFT)
 desText = Text(frame3, height=1, width=100, font=('Raleway', 12))
 desText.pack(padx=5, side=LEFT)
+
+
+option1 = ["Kilometers", "Miles"]
+option2 = ["Liters", "Gallons"]
+
+# dropdown menu distance
+distanceLabel = ttk.Label( frame4, text='Distance in: ')
+distanceLabel.pack(padx=5,   side=LEFT)
+distance = ttk.Combobox( frame4, value=option1, state='readonly')
+distance.current(0)
+distance.pack(padx=5,   side=LEFT)
+distance.bind("<<ComboboxSelected>>", sumite)
+# dropdown menu fuel
+fuelLabel = ttk.Label( frame4, text='Fuel in: ')
+fuelLabel.pack(padx=5,   side=LEFT)
+fuel = ttk.Combobox( frame4, value=option2, state='readonly')
+fuel.current(0)
+fuel.pack(padx=5,   side=LEFT)
+fuel.bind("<<ComboboxSelected>>", sumite)
+
+
 # creating and embedding the submit and reset buttons
 btnSubmit = ttk.Button(
-    frame4, text='Submit', command=sumite, width=50, style='all.TButton')
+    frame5, text='Submit', command=sumite, width=50, style='all.TButton')
 btnSubmit.pack(padx=5, pady=5, side=LEFT)
 btnReset = ttk.Button(
-    frame4, text='Reset', command=clearFields, width=50, style='all.TButton')
+    frame5, text='Reset', command=clearFields, width=50, style='all.TButton')
 btnReset.pack(padx=5, pady=5, side=LEFT)
 # creating and embedding the display text area
 displayOutput = ScrolledText(
