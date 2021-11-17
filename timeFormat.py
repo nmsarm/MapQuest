@@ -16,7 +16,8 @@ def formatTime(seconds):
             hour = format60(hour)
             minute = format60(minute)
             second = format60(second)
-            return f'{hour}:{minute}:{second}'
+            result = f'{hour}:{minute}:{second}'
+            return result
         else:
             return "Invalid Time"
     except:
