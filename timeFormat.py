@@ -24,7 +24,7 @@ def formatTime(seconds):
 
 
 def format60(time):
-    if time > 10:
+    if time >= 10:
         return '{}'.format(time)
     else:
         return '0{}'.format(time)
