@@ -1,5 +1,6 @@
 import urllib.parse
 import requests
+import timeFormat
 
 main_api = "https://www.mapquestapi.com/directions/v2/route?"
 key = "mNYWrQQHE28GXaWeFNWnG7r6yXABk5iW"
