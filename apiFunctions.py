@@ -25,7 +25,8 @@ def fetchData(start, des, distance, fuel):
         output += "=============================================\n"
         output += "Directions from " + (start) + " to " + (des)
         output += "\nTrip Duration: " + (json_data["route"]["formattedTime"])
-        output += "\nRound Trip Duration: " + str(int((json_data["route"]["time"]))*2)
+        output += "\nRound Trip Duration: " + \
+            str(timeFormat.formatTime(int((json_data["route"]["time"]))*2))
         if distance == "Miles":
             # data['distance'] = distance
             output += "\nMiles: " + \
