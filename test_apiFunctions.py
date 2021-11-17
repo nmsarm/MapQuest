@@ -1,4 +1,3 @@
-from tkinter.constants import INSERT
 import unittest
 import apiFunctions as app
 
