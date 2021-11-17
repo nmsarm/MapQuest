@@ -36,6 +36,20 @@ frame5.pack(padx=10, pady=10)
 framelast = Frame(root)
 framelast.pack(padx=10, pady=10)
 
+# swap
+
+
+def swapHandler(e):
+    swapLocation()
+
+
+def swapLocation():
+    start = (startText.get("1.0", "end")).strip()
+    startText.delete("1.0", "end")
+    startText.insert(INSERT, (desText.get("1.0", "end")).strip())
+    desText.delete("1.0", "end")
+    desText.insert(INSERT, start)
+
 
 # function for reset button
 def resetHandler(e):
@@ -108,6 +122,12 @@ desText = Text(frame3, height=1, width=100, font=('Raleway', 12))
 desText.pack(padx=5, side=LEFT)
 desText.bind("<Tab>", focus_next_widget)
 
+# swap inputs for starting location and destination
+btnSwap = ttk.Button(
+    frame4, text='Swap Locations', command=swapLocation, width=50, style='all.TButton')
+btnSwap.pack(padx=5, pady=5, side=LEFT)
+btnSwap.bind("<Tab>", focus_next_widget)
+btnSwap.bind("<Return>", swapHandler)
 
 option1 = ["Kilometers", "Miles"]
 option2 = ["Liters", "Gallons"]
