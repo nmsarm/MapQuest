@@ -1,14 +1,8 @@
-# from original code
-import urllib.parse
-import requests
 # gui and styling module
 from tkinter import *
 from tkinter import ttk, filedialog, messagebox, _tkinter
 from tkinter.scrolledtext import *
-
-# from original code
-main_api = "https://www.mapquestapi.com/directions/v2/route?"
-key = "mNYWrQQHE28GXaWeFNWnG7r6yXABk5iW"
+import apiFunctions
 
 # creating window
 root = Tk()
@@ -43,8 +37,6 @@ framelast = Frame(root)
 framelast.pack(padx=10, pady=10)
 
 
-data = {'distance': 'Kilometers', 'fuel': 'Liters' }
-
 # function for reset button
 
 
@@ -56,13 +48,13 @@ def clearFields():
     displayOutput.configure(state='disabled')
     distance.current(0)
     fuel.current(0)
-    
+
 # function for closing the program
 
 
 def closeProgram():
-    if messagebox.askokcancel("Closing Program", "Click OK to close the program."):
-        root.destroy()
+    # if messagebox.askokcancel("Closing Program", "Click OK to close the program."):
+    root.destroy()
 
 # function for submit button
 
@@ -72,57 +64,8 @@ def sumite():
     start = (startText.get("1.0", "end")).strip()
     des = (desText.get("1.0", "end")).strip()
     # uses mapquest api to get the data - from original code - modified to fit code structure
-    url = main_api + \
-        urllib.parse.urlencode({"key": key, "from": start, "to": des})
-    print("URL: " + (url))
-    json_data = requests.get(url).json()
-    json_status = json_data["info"]["statuscode"]
-    # output stores the string to be displayed in the text area
-    output = "URL: " + (url)
-    if json_status == 0:  # meaning the request was successful
-        output += "\n\nAPI Status: " + \
-            str(json_status) + " = A successful route call.\n"
-        output += "=============================================\n"
-        output += "Directions from " + (start) + " to " + (des)
-        output += "\nTrip Duration: " + (json_data["route"]["formattedTime"])
+    output = apiFunctions.fetchData(start, des, distance.get(), fuel.get())
 
-        if data['distance'] != distance.get():
-            data['distance'] = distance.get()
-            output += "\nMiles: " + \
-            str("{:.2f}".format((json_data["route"]["distance"])))
-        else:
-            output += "\nKilometers: " + \
-            str("{:.2f}".format((json_data["route"]["distance"])*1.61))
-        
-        if data['fuel'] != fuel.get():
-            data['fuel'] = fuel.get()
-            output += "\nFuel Used (Gal): " + \
-                 str("{:.2f}".format(json_data["route"]["fuelUsed"]))
-            output += "\n=============================================\n"
-        else:
-            output += "\nFuel Used (Ltr): " + \
-                str("{:.2f}".format((json_data["route"]["fuelUsed"])*3.78))
-            output += "\n=============================================\n"
-
-        for each in json_data["route"]["legs"][0]["maneuvers"]:
-            output += (each["narrative"]) + " (" + \
-                str("{:.2f}".format((each["distance"])*1.61) + " km)")
-            output += "\n\n"
-    elif json_status == 402:  # meaning the input(s) was/were invalid
-        output += "**********************************************\n"
-        output += "Status Code: " + \
-            str(json_status) + "; Invalid user inputs for one or both locations.\n"
-        output += "**********************************************\n"
-    elif json_status == 611:  # meaning there is/are missing inputs
-        output += "**********************************************\n"
-        output += "Status Code: " + \
-            str(json_status) + "; Missing an entry for one or both locations.\n"
-        output += "**********************************************\n"
-    else:  # to handle other errors
-        output += "************************************************************************\n"
-        output += "For Status Code: " + str(json_status) + "; Refer to:\n"
-        output += "https://developer.mapquest.com/documentation/directions-api/status-codes\n"
-        output += "************************************************************************\n"
     # displaying the output text to the text area
     displayOutput.configure(state='normal')
     displayOutput.delete(1.0, END)
@@ -149,19 +92,19 @@ option1 = ["Kilometers", "Miles"]
 option2 = ["Liters", "Gallons"]
 
 # dropdown menu distance
-distanceLabel = ttk.Label( frame4, text='Distance in: ')
+distanceLabel = ttk.Label(frame4, text='Distance in: ')
 distanceLabel.pack(padx=5,   side=LEFT)
-distance = ttk.Combobox( frame4, value=option1, state='readonly')
+distance = ttk.Combobox(frame4, value=option1, state='readonly')
 distance.current(0)
 distance.pack(padx=5,   side=LEFT)
-distance.bind("<<ComboboxSelected>>", sumite)
+# distance.bind("<<ComboboxSelected>>", sumite)
 # dropdown menu fuel
-fuelLabel = ttk.Label( frame4, text='Fuel in: ')
+fuelLabel = ttk.Label(frame4, text='Fuel in: ')
 fuelLabel.pack(padx=5,   side=LEFT)
-fuel = ttk.Combobox( frame4, value=option2, state='readonly')
+fuel = ttk.Combobox(frame4, value=option2, state='readonly')
 fuel.current(0)
 fuel.pack(padx=5,   side=LEFT)
-fuel.bind("<<ComboboxSelected>>", sumite)
+# fuel.bind("<<ComboboxSelected>>", sumite)
 
 
 # creating and embedding the submit and reset buttons
